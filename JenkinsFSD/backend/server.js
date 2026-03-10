@@ -9,7 +9,7 @@ app.use(cors())
 
 /* CREATE CONTACT */
 
-app.post("/contact",(req,res)=>{
+app.post("/contacts",(req,res)=>{
     const {name,email,phone} = req.body
 
     const sql = "INSERT INTO contacts (name,email,phone) VALUES (?,?,?)"
