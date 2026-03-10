@@ -1,25 +1,82 @@
 const express = require("express")
 const cors = require("cors")
+const db = require("./db")
 
 const app = express()
+
 app.use(express.json())
 app.use(cors())
 
-let contacts = []
-
-app.get("/contacts", (req,res)=>{
-    res.json(contacts)
-})
+/* CREATE CONTACT */
 
 app.post("/contacts",(req,res)=>{
-    contacts.push(req.body)
-    res.json({message:"Contact added"})
+    const {name,email,phone} = req.body
+
+    const sql = "INSERT INTO contacts (name,email,phone) VALUES (?,?,?)"
+
+    db.query(sql,[name,email,phone],(err,result)=>{
+        if(err){
+            res.send(err)
+        } else {
+            res.send("Contact Added")
+        }
+    })
 })
 
-app.delete("/contacts/:id",(req,res)=>{
-    contacts.splice(req.params.id,1)
-    res.json({message:"Deleted"})
+
+/* READ CONTACTS */
+
+app.get("/contacts",(req,res)=>{
+
+    const sql = "SELECT * FROM contacts"
+
+    db.query(sql,(err,result)=>{
+        if(err){
+            res.send(err)
+        } else {
+            res.json(result)
+        }
+    })
 })
+
+
+/* UPDATE CONTACT */
+
+app.put("/contacts/:id",(req,res)=>{
+
+    const id = req.params.id
+    const {name,email,phone} = req.body
+
+    const sql = "UPDATE contacts SET name=?, email=?, phone=? WHERE id=?"
+
+    db.query(sql,[name,email,phone,id],(err,result)=>{
+        if(err){
+            res.send(err)
+        } else {
+            res.send("Contact Updated")
+        }
+    })
+})
+
+
+/* DELETE CONTACT */
+
+app.delete("/contacts/:id",(req,res)=>{
+
+    const id = req.params.id
+
+    const sql = "DELETE FROM contacts WHERE id=?"
+
+    db.query(sql,[id],(err,result)=>{
+        if(err){
+            res.send(err)
+        } else {
+            res.send("Contact Deleted")
+        }
+    })
+
+})
+
 
 app.listen(5000,()=>{
     console.log("Server running on port 5000")
