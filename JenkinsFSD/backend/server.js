@@ -9,13 +9,13 @@ app.use(cors())
 
 /* CREATE CONTACT */
 
-app.post("/contacts,(req,res)=>{
-    const {name,email,phone} = req.body
+app.post("/contacts", (req, res) => {
+    const { name, email, phone } = req.body
 
-    const sql = "INSERT INTO contacts (name,email,phonenumbyes) VALUES (?,?,?)"
+    const sql = "INSERT INTO contacts (name, email, phone) VALUES (?, ?, ?)"
 
-    db.query(sql,[name,email,phone],(err,result)=>{
-        if(err){
+    db.query(sql, [name, email, phone], (err, result) => {
+        if (err) {
             res.send(err)
         } else {
             res.send("Contact Added")
@@ -26,12 +26,12 @@ app.post("/contacts,(req,res)=>{
 
 /* READ CONTACTS */
 
-app.get("/contacts",(req,res)=>{
+app.get("/contacts", (req, res) => {
 
     const sql = "SELECT * FROM contacts"
 
-    db.query(sql,(err,result)=>{
-        if(err){
+    db.query(sql, (err, result) => {
+        if (err) {
             res.send(err)
         } else {
             res.json(result)
@@ -42,15 +42,15 @@ app.get("/contacts",(req,res)=>{
 
 /* UPDATE CONTACT */
 
-app.put("/contacts/:id",(req,res)=>{
+app.put("/contacts/:id", (req, res) => {
 
     const id = req.params.id
-    const {name,email,phone} = req.body
+    const { name, email, phone } = req.body
 
     const sql = "UPDATE contacts SET name=?, email=?, phone=? WHERE id=?"
 
-    db.query(sql,[name,email,phone,id],(err,result)=>{
-        if(err){
+    db.query(sql, [name, email, phone, id], (err, result) => {
+        if (err) {
             res.send(err)
         } else {
             res.send("Contact Updated")
@@ -61,14 +61,14 @@ app.put("/contacts/:id",(req,res)=>{
 
 /* DELETE CONTACT */
 
-app.delete("/contacts/:id",(req,res)=>{
+app.delete("/contacts/:id", (req, res) => {
 
     const id = req.params.id
 
     const sql = "DELETE FROM contacts WHERE id=?"
 
-    db.query(sql,[id],(err,result)=>{
-        if(err){
+    db.query(sql, [id], (err, result) => {
+        if (err) {
             res.send(err)
         } else {
             res.send("Contact Deleted")
@@ -78,6 +78,6 @@ app.delete("/contacts/:id",(req,res)=>{
 })
 
 
-app.listen(5000,()=>{
+app.listen(5000, () => {
     console.log("Server running on port 5000")
 })
