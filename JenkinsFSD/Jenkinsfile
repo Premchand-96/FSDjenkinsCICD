@@ -10,7 +10,7 @@ stages {
 
 stage('Clone') {
 steps {
-git 'https://github.com/premchand-96/FSDjenkinsCICD.git'
+git 'https://github.com/Premchand-96/FSDjenkinsCICD.git'
 }
 }
 
