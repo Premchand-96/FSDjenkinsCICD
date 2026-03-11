@@ -12,7 +12,7 @@ app.use(cors())
 app.post("/contacts,(req,res)=>{
     const {name,email,phone} = req.body
 
-    const sql = "INSERT INTO contacts (name,email,phonenumberss) VALUES (?,?,?)"
+    const sql = "INSERT INTO contacts (name,email,phonenumbes) VALUES (?,?,?)"
 
     db.query(sql,[name,email,phone],(err,result)=>{
         if(err){
