@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact Book</title>
+</head>
+
+<body>
+
+<h2>Contact Book</h2>
+
+<input id="name" placeholder="Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+
+<button onclick="addContact()">Add Contact</button>
+
+<h3>Contacts List</h3>
+
+<ul id="list"></ul>
+
+<script>
+
+const API = "http://13.205.216.196:5000/contacts"
+
+function loadContacts(){
+
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+    
+    const list = document.getElementById("list")
+    list.innerHTML=""
+
+    data.forEach(c=>{
+        const li = document.createElement("li")
+        li.innerText = c.name + " - " + c.phone
+        list.appendChild(li)
+    })
+
+})
+
+}
+
+function addContact(){
+
+const name = document.getElementById("name").value
+const email = document.getElementById("email").value
+const phone = document.getElementById("phone").value
+
+fetch(API,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({name,email,phone})
+})
+.then(()=>loadContacts())
+
+}
+
+loadContacts()
+
+</script>
+
+</body>
+</html>
