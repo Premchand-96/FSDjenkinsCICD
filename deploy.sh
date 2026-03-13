@@ -1,27 +1,17 @@
 #!/bin/bash
 
-echo "Starting Deployment"
+echo "Stopping old backend..."
 
-# stop old backend
-pkill node
+pkill node || true
 
-# backend setup
+echo "Starting backend..."
+
 cd backend
 npm install
+node server.js &
 
-# start backend
-nohup node server.js > backend.log 2>&1 &
+echo "Starting frontend..."
 
-# frontend setup
 cd ../frontend
-
-# install simple server if not installed
 npm install -g http-server
-
-# stop old frontend
-pkill http-server
-
-# start frontend
-nohup http-server -p 8081 > frontend.log 2>&1 &
-
-echo "Deployment Completed"
+http-server -p 8081 &
