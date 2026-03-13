@@ -21,7 +21,15 @@ pipeline {
 
         stage('Build & Deploy') {
             steps {
-                sh 'echo Deploying Application'
+                sh '''
+                # Start backend
+                cd backend
+                pm2 restart backend || pm2 start server.js --name backend
+
+                # Start frontend
+                cd ../frontend
+                pm2 restart frontend || pm2 start "http-server -p 8081" --name frontend
+                '''
             }
         }
 
