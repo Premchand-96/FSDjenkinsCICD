@@ -6,7 +6,7 @@ stages {
 
 stage('Checkout') {
 steps {
-git 'https://github.com/YOUR_GITHUB_USERNAME/contact-app.git'
+git 'https://github.com/Premchand-96/FSDjenkinsCICD.git'
 }
 }
 
