@@ -3,7 +3,13 @@ pipeline {
 
     stages {
 
-        stage('Install Backend Dependencies') {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/Premchand-96/contact-app.git'
+            }
+        }
+
+        stage('Install Backend') {
             steps {
                 dir('backend') {
                     sh 'npm install'
@@ -11,18 +17,22 @@ pipeline {
             }
         }
 
-        stage('Build & Deploy') {
+        stage('Deploy Backend') {
             steps {
                 sh '''
-                # Backend
                 cd backend
                 pm2 delete backend || true
                 pm2 start server.js --name backend
+                '''
+            }
+        }
 
-                # Frontend
-                cd ../frontend
+        stage('Deploy Frontend') {
+            steps {
+                sh '''
+                cd frontend
                 pm2 delete frontend || true
-                pm2 start "http-server -p 8081" --name frontend
+                pm2 start "http-server -p 8081 --cors" --name frontend
                 '''
             }
         }
