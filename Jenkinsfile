@@ -11,27 +11,20 @@ pipeline {
             }
         }
 
-        stage('Install Frontend Dependencies') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install || true'
-                }
-            }
-        }
-
         stage('Build & Deploy') {
             steps {
                 sh '''
-                # Start backend
+                # Backend
                 cd backend
-                pm2 restart backend || pm2 start server.js --name backend
+                pm2 delete backend || true
+                pm2 start server.js --name backend
 
-                # Start frontend
+                # Frontend
                 cd ../frontend
-                pm2 restart frontend || pm2 start "http-server -p 8081" --name frontend
+                pm2 delete frontend || true
+                pm2 start "http-server -p 8081" --name frontend
                 '''
             }
         }
-
     }
 }
